@@ -1,0 +1,40 @@
+name: Bump formula
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to package (defaults to latest stable)"
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update formula
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/bump.sh "${{ inputs.tag }}"
+      - name: Open PR if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet; then
+            echo "Formula already up to date"
+            exit 0
+          fi
+          version="$(sed -n 's/^  version "\(.*\)"/\1/p' Formula/agentgateway.rb)"
+          branch="bump-agentgateway-${version}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git commit -am "agentgateway ${version}"
+          git push -u origin "$branch"
+          gh pr create --title "agentgateway ${version}" --body "Automated bump to v${version}." --base main
