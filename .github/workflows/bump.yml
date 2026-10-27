@@ -30,7 +30,7 @@ jobs:
             echo "Formula already up to date"
             exit 0
           fi
-          version="$(sed -n 's/^  version "\(.*\)"/\1/p' Formula/agentgateway.rb)"
+          version="$(sed -n 's#.*download/v\([^/]*\)/.*#\1#p' Formula/agentgateway.rb | head -1)"
           branch="bump-agentgateway-${version}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

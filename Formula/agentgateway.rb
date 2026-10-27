@@ -1,14 +1,15 @@
 class Agentgateway < Formula
   desc "Open source, cloud-native proxy for AI agents, LLMs and MCP/A2A traffic"
   homepage "https://agentgateway.dev"
-  version "1.7.0"
   license "Apache-2.0"
 
   on_macos do
     depends_on arch: :arm64
 
-    url "https://github.com/agentgateway/agentgateway/releases/download/v1.7.0/agentgateway-darwin-arm64"
-    sha256 "34bfc961d0e459d0f89103100e61730d4b5d8e2151c851d33cd034a126eb2bfe"
+    on_arm do
+      url "https://github.com/agentgateway/agentgateway/releases/download/v1.7.0/agentgateway-darwin-arm64"
+      sha256 "34bfc961d0e459d0f89103100e61730d4b5d8e2151c851d33cd034a126eb2bfe"
+    end
   end
 
   on_linux do

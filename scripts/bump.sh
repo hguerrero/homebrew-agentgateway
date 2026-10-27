@@ -24,14 +24,15 @@ cat > "$FORMULA" <<EOF
 class Agentgateway < Formula
   desc "Open source, cloud-native proxy for AI agents, LLMs and MCP/A2A traffic"
   homepage "https://agentgateway.dev"
-  version "${version}"
   license "Apache-2.0"
 
   on_macos do
     depends_on arch: :arm64
 
-    url "${base}/agentgateway-darwin-arm64"
-    sha256 "${darwin_arm64}"
+    on_arm do
+      url "${base}/agentgateway-darwin-arm64"
+      sha256 "${darwin_arm64}"
+    end
   end
 
   on_linux do
