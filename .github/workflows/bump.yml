@@ -17,14 +17,19 @@ jobs:
   bump:
     runs-on: ubuntu-latest
     steps:
+      # Pushes and PRs made with the default GITHUB_TOKEN do not trigger other
+      # workflows. Set a BUMP_TOKEN secret (PAT) so the brew test-bot checks run
+      # on the bump PR.
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BUMP_TOKEN || github.token }}
       - name: Update formula
         env:
           GH_TOKEN: ${{ github.token }}
         run: scripts/bump.sh "${{ inputs.tag }}"
       - name: Open PR if changed
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.BUMP_TOKEN || github.token }}
         run: |
           if git diff --quiet; then
             echo "Formula already up to date"
