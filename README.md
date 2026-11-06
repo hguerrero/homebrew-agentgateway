@@ -3,9 +3,9 @@
 Homebrew tap for [agentgateway](https://agentgateway.dev).
 
 ```sh
-brew install agentgateway/agentgateway/agentgateway
+brew install hguerrero/agentgateway/agentgateway
 # or
-brew tap agentgateway/agentgateway
+brew tap hguerrero/agentgateway
 brew install agentgateway
 ```
 
@@ -13,7 +13,7 @@ Homebrew requires explicit trust for third-party taps. If `brew install` asks
 for it, trust just this formula:
 
 ```sh
-brew trust --formula agentgateway/agentgateway/agentgateway
+brew trust --formula hguerrero/agentgateway/agentgateway
 ```
 
 Verify:
@@ -57,9 +57,9 @@ scripts/bump.sh v1.7.0
 To test a change locally before pushing:
 
 ```sh
-brew install --build-from-source agentgateway/agentgateway/agentgateway
+brew install --build-from-source hguerrero/agentgateway/agentgateway
 brew test agentgateway
-brew audit --strict agentgateway/agentgateway/agentgateway
+brew audit --strict hguerrero/agentgateway/agentgateway
 ```
 
 ## Publishing
@@ -68,7 +68,7 @@ Review each bump PR and wait for its checks to pass. Then publish its bottles
 with `brew pr-pull` (preferably with the reviewed commit SHA):
 
 ```sh
-brew pr-pull --tap=agentgateway/agentgateway --head-sha=<sha> <PR number>
+brew pr-pull --tap=hguerrero/agentgateway --head-sha=<sha> <PR number>
 ```
 
 or run the **brew pr-pull** workflow from the Actions tab with the PR number
