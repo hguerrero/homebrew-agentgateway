@@ -6,9 +6,8 @@ set -euo pipefail
 REPO="agentgateway/agentgateway"
 FORMULA="$(cd "$(dirname "$0")/.." && pwd)/Formula/agentgateway.rb"
 
-tag="${1:-$(gh release view --repo "$REPO" --json tagName -q .tagName)}"
+tag="${1:-$(gh release view --repo "${REPO}" --json tagName -q .tagName)}"
 tag="v${tag#v}"
-version="${tag#v}"
 base="https://github.com/${REPO}/releases/download/${tag}"
 
 sha_for() {
@@ -20,19 +19,18 @@ darwin_arm64="$(sha_for darwin-arm64)"
 linux_amd64="$(sha_for linux-amd64)"
 linux_arm64="$(sha_for linux-arm64)"
 
-cat > "$FORMULA" <<EOF
+cat >"${FORMULA}" <<EOF
 class Agentgateway < Formula
   desc "Open source, cloud-native proxy for AI agents, LLMs and MCP/A2A traffic"
   homepage "https://agentgateway.dev"
+  # Default (macOS) source. Upstream only publishes an Apple silicon binary, so
+  # Intel is excluded below; the Linux blocks override this URL.
+  url "${base}/agentgateway-darwin-arm64"
+  sha256 "${darwin_arm64}"
   license "Apache-2.0"
 
   on_macos do
     depends_on arch: :arm64
-
-    on_arm do
-      url "${base}/agentgateway-darwin-arm64"
-      sha256 "${darwin_arm64}"
-    end
   end
 
   on_linux do
